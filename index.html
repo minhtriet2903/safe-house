@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link rel="icon" href="https://tdmu.edu.vn/img/logo2018-1.png" />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <title>Quản lý thông số trong nhà</title>
+
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+
+    <script src="https://www.gstatic.com/firebasejs/5.7.3/firebase.js"></script>
+    <script src="firebase-config.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-danger flex-md-nowrap shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="index.html"
+        >♥︎♥︎♥︎♥︎</a
+      >
+    </nav>
+
+    <div class="row p-5 m-5">
+      <div class="col-md-6 text-center">
+        <img src="assets/fire-icon.png" alt="fire" width="200" height="200" />
+        <h2 class="text-danger">Lượng khí gas hiện tại</h2>
+        <div class="circle bg-danger">
+          <p id="gas" class="h1">0.05</p>
+        </div>
+        <!-- <h4 class="text-danger">Màu thể hiện độ nguy hiểm:</h4> -->
+      </div>
+
+      <div class="col-md-6 text-center pt-5">
+        <h2 class="my-5 text-danger">Điện năng trong nhà</h2>
+        <div class="row center-row">
+          <img
+            src="assets/analysis.png"
+            alt="analysis"
+            width="200"
+            height="200"
+          />
+
+          <div class="mx-5 align-left">
+            <h3 id="volt" class="text-danger">
+              <i class="fas fa-plug"></i> &nbsp;
+            </h3>
+            <h3 id="ampe" class="text-danger">
+              <i class="fas fa-charging-station"></i> &nbsp; 0.5A
+            </h3>
+            <h3 id="watt" class="text-danger">
+              <i class="fas fa-bolt"></i> &nbsp; 3W
+            </h3>
+            <h3 id="kWh" class="text-danger">
+              <i class="fas fa-house-damage"></i> &nbsp;Total kWh: 0.04
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+    <script type="text/javascript">
+      var volt = database.ref("volt");
+      var ampe = database.ref("ampe");
+      var watt = database.ref("watt");
+      var kWh = database.ref("kWh");
+
+      var gas = database.ref("gas");
+
+      volt.on("value", function(snapshot) {
+        $("#volt").html('<i class="fas fa-plug"></i> &nbsp; ' + snapshot.val());
+      });
+
+      ampe.on("value", function(snapshot) {
+        $("#ampe").html(
+          '<i class="fas fa-charging-station"></i> &nbsp; ' + snapshot.val()
+        );
+      });
+
+      watt.on("value", function(snapshot) {
+        $("#watt").html('<i class="fas fa-bolt"></i> &nbsp; ' + snapshot.val());
+      });
+
+      kWh.on("value", function(snapshot) {
+        var total = 0;
+
+        $("#kWh").html(
+          '<i class="fas fa-house-damage"></i> &nbsp;Total kWh: ' +
+            snapshot.last().val()
+        );
+      });
+
+      gas.on("value", function(snapshot) {
+        $("#gas").html(snapshot.val());
+      });
+
+      // danhSach.on("value", function(snapshot) {
+      //   $("#danhSach")
+      //     .find("tbody")
+      //     .html("");
+      //   snapshot.forEach(child => {
+      //     $("#danhSach")
+      //       .find("tbody")
+      //       .append(
+      //         `<tr><td>${
+      //           child.key
+      //         }</td><td>${child.val()}</td><td class=\"text-danger\"><i class="fas fa-trash-alt fa-2x cursor" onclick="dialog(\'${
+      //           child.key
+      //         }\')"></i></td></tr>`
+      //       );
+      //   });
+      // });
+
+      const dialog = function showDialog(id) {
+        if (confirm("Bạn có chắc muốn xóa thẻ này ra khỏi danh sách ?")) {
+          console.log("Id removing: ", id);
+          database.ref(`${id}`).remove();
+        }
+      };
+    </script>
+  </body>
+</html>

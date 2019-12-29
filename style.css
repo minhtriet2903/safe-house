@@ -1,0 +1,25 @@
+.circle {
+  background: red;
+  border-radius: 120px;
+  color: white;
+  height: 120px;
+  font-weight: bold;
+  width: 120px;
+  display: table;
+  margin: 40px auto;
+}
+.circle p {
+  vertical-align: middle;
+  display: table-cell;
+}
+
+.center-row {
+  justify-content: center;
+}
+
+.align-left {
+  justify-content: flex-start;
+  align-self: flex-start;
+  align-content: flex-start;
+  text-align: left;
+}
